@@ -1,22 +1,18 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import "./App.css";
-import { Number } from "./components/Number.tsx";
-import { PersonForm } from "./components/PersonForm.tsx";
-import { Notification } from "./components/Notification.tsx";
+import { Number } from "./components/Number.jsx";
+import { PersonForm } from "./components/PersonForm.jsx";
+import { Notification } from "./components/Notification.jsx";
+import React from "react";
 import {
   getAll,
   create,
   deletePerson,
   update,
-} from "./services/persons/numbers.js";
+} from "./services/persons/numbers.jsx";
 const App = () => {
-  const [persons, setPersons] = useState([
-    {
-      name: "Arto Hellas",
-      number: 2242424,
-    },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [Message, setMessage] = useState(null);
@@ -58,7 +54,7 @@ const App = () => {
               )
             );
           })
-          .catch((error) => {
+          .catch(() => {
             setMessage("error");
             setTimeout(() => {
               setMessage(null);
@@ -104,7 +100,7 @@ const App = () => {
         <div key={person.name}>
           <Number number={person.number} name={person.name} />
           <button onClick={() => handleDelete(person.id, person.name)}>
-            Eliminar
+            Delete
           </button>
         </div>
       ))}
