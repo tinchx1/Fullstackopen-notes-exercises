@@ -1,46 +1,47 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import "./App.css";
-import { Number } from "./components/Number.jsx";
-import { PersonForm } from "./components/PersonForm.jsx";
-import { Notification } from "./components/Notification.jsx";
-import React from "react";
+import React, { useState, useEffect } from 'react'
+
+import './App.css'
+import { Number } from './components/Number.jsx'
+import { PersonForm } from './components/PersonForm.jsx'
+import { Notification } from './components/Notification.jsx'
+import { Filter } from './components/Filter.jsx'
 import {
   getAll,
   create,
   deletePerson,
-  update,
-} from "./services/persons/numbers.jsx";
+  update
+} from './services/persons/numbers.jsx'
 const App = () => {
-  const [persons, setPersons] = useState([]);
-  const [newName, setNewName] = useState("");
-  const [newNumber, setNewNumber] = useState("");
-  const [Message, setMessage] = useState(null);
+  const [people, setPeople] = useState([])
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+  const [Message, setMessage] = useState(null)
+  const [textFiltered, setTextFiltered] = useState('')
   useEffect(() => {
-    getAll().then((persons) => {
-      setPersons(persons);
-    });
-  }, []);
+    getAll().then((people) => {
+      setPeople(people)
+    })
+  }, [])
 
   const handleChange = (event, type) => {
-    const value = event.target.value;
-    if (type === "name") {
-      setNewName(value);
-    } else if (type === "number") {
-      setNewNumber(value);
+    const value = event.target.value
+    if (type === 'name') {
+      setNewName(value)
+    } else if (type === 'number') {
+      setNewNumber(value)
     }
-  };
+  }
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    const isDuplicate = persons.some((person) => person.name === newName);
+    event.preventDefault()
+    const isDuplicate = people.some((person) => person.name === newName)
     const newPerson = {
       name: newName,
-      number: newNumber,
-    };
+      number: newNumber
+    }
     if (isDuplicate) {
-      const duplicatePerson = persons.find((person) => person.name === newName);
-      const id = duplicatePerson.id;
+      const duplicatePerson = people.find((person) => person.name === newName)
+      const id = duplicatePerson.id
       if (
         window.confirm(
           `${newName} is already added to phonebook, replace the old number with a new one?`
@@ -48,46 +49,58 @@ const App = () => {
       ) {
         update(id, newPerson)
           .then((returnedPerson) => {
-            setPersons(
-              persons.map((person) =>
+            setPeople(
+              people.map((person) =>
                 person.id !== id ? person : returnedPerson
               )
-            );
+            )
           })
           .catch(() => {
-            setMessage("error");
+            setMessage('error')
             setTimeout(() => {
-              setMessage(null);
-            }, 5000);
-          });
-        setMessage(`${newPerson.name} has been updated with ly`);
+              setMessage(null)
+            }, 5000)
+          })
+        setMessage(`${newPerson.name} has been updated with ly`)
         setTimeout(() => {
-          setMessage(null);
-        }, 5000);
+          setMessage(null)
+        }, 5000)
       }
     } else {
-      create(newPerson).then((persons) => {
-        setPersons((prevPersons) => prevPersons.concat(persons));
-        setMessage(`${newPerson.name} has been added ly`);
+      create(newPerson).then((people) => {
+        setPeople((prevpeople) => prevpeople.concat(people))
+        setMessage(`${newPerson.name} has been added ly`)
         setTimeout(() => {
-          setMessage(null);
-        }, 5000);
-      });
-      setNewName("");
-      setNewNumber("");
+          setMessage(null)
+        }, 5000)
+      })
+      setNewName('')
+      setNewNumber('')
     }
-  };
+  }
 
   const handleDelete = (id, name) => {
     if (window.confirm(`Delete ${name}?`)) {
       deletePerson(id).then((response) => {
-        setPersons(response);
-      });
+        setPeople(response)
+      })
     }
-  };
+  }
+  const handleFilter = (event) => {
+    const searchText = event.target.value
+    setTextFiltered(searchText)
+  }
+  useEffect(() => {
+    const filteredPeople = people.filter((person) => person.name.toLowerCase().includes(textFiltered.toLowerCase()))
+    setPeople(filteredPeople)
+  }, [textFiltered])
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <h3>Filter</h3>
+      <Filter text={textFiltered} handleFilter={handleFilter} />
+      <h3>Add a new</h3>
       <Notification Message={Message} />
       <PersonForm
         handleSubmit={handleSubmit}
@@ -96,7 +109,7 @@ const App = () => {
         newNumber={newNumber}
       />
       <h2>Numbers</h2>
-      {persons.map((person) => (
+      {people.map((person) => (
         <div key={person.name}>
           <Number number={person.number} name={person.name} />
           <button onClick={() => handleDelete(person.id, person.name)}>
@@ -105,7 +118,7 @@ const App = () => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

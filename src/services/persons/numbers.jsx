@@ -1,25 +1,32 @@
-import axios from "axios";
+import axios from 'axios'
 
 const getAll = () => {
-  const request = axios.get("http://localhost:3001/api/persons");
-  return request.then((response) => response.data);
-};
+  const request = axios.get(
+    'https://first-node-server-orpin.vercel.app/api/people'
+  )
+  return request.then((response) => response.data)
+}
 
 const create = (newObject) => {
-  const request = axios.post(`http://localhost:3001/api/persons`, newObject);
-  return request.then((response) => response.data);
-};
+  const request = axios.post(
+    'https://first-node-server-orpin.vercel.app/api/people',
+    newObject
+  )
+  return request.then((response) => response.data)
+}
 
 const deletePerson = (id) => {
-  const request = axios.delete(`http://localhost:3001/api/persons/${id}`);
-  return request.then(() => getAll());
-};
+  const request = axios.delete(
+    `https://first-node-server-orpin.vercel.app/api/people/${id}`
+  )
+  return request.then(() => getAll())
+}
 
 const update = (id, newObject) => {
   const request = axios.put(
-    `http://localhost:3001/api/persons/${id}`,
+    `https://first-node-server-orpin.vercel.app/api/people/${id}`,
     newObject
-  );
-  return request.then((response) => response.data);
-};
-export { getAll, create, deletePerson, update };
+  )
+  return request.then((response) => response.data)
+}
+export { getAll, create, deletePerson, update }

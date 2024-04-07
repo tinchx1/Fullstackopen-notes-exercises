@@ -5,5 +5,5 @@ export const Number = ({ name, number }) => {
         {name} {number}
       </p>
     </div>
-  );
-};
+  )
+}
