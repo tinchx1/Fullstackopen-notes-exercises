@@ -6,7 +6,7 @@ export const PersonForm = ({
 }) => {
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form className='form-container' onSubmit={handleSubmit}>
         <div>
           name:
           <input
@@ -17,7 +17,7 @@ export const PersonForm = ({
         <div>
           number:
           <input
-            type='number'
+            type='text'
             onChange={(event) => handleChange(event, 'number')}
             value={newNumber}
           />

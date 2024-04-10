@@ -18,8 +18,11 @@
   border-radius: 5px;
   padding: 10px;
 }
-
+.form-container {
+  position: relative;
+}
 .Notification {
   height: 50px;
   margin-bottom: 10px;
+  position: relative;
 }

@@ -44,7 +44,7 @@ const App = () => {
       const id = duplicatePerson._id
       if (
         window.confirm(
-          `${newName} is already added to phonebook, replace the old number with a new one?`
+          `${newName} is already added to phone book, replace the old number with a new one?`
         )
       ) {
         update(id, newPerson)
@@ -67,13 +67,20 @@ const App = () => {
         }, 5000)
       }
     } else {
-      create(newPerson).then((people) => {
-        setPeople((prevpeople) => prevpeople.concat(people))
-        setMessage(`${newPerson.name} has been added ly`)
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
-      })
+      create(newPerson)
+        .then((people) => {
+          setPeople((prevpeople) => prevpeople.concat(people))
+          setMessage(`${newPerson.name} has been added ly`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setMessage(error.response.data.error)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
       setNewName('')
       setNewNumber('')
     }
@@ -102,7 +109,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h2>Phone book</h2>
       <h3>Filter</h3>
       <Filter text={textFiltered} handleFilter={handleFilter} />
       <h3>Add a new</h3>
