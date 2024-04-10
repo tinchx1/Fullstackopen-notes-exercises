@@ -41,7 +41,7 @@ const App = () => {
     }
     if (isDuplicate) {
       const duplicatePerson = people.find((person) => person.name === newName)
-      const id = duplicatePerson.id
+      const id = duplicatePerson._id
       if (
         window.confirm(
           `${newName} is already added to phonebook, replace the old number with a new one?`
@@ -51,7 +51,7 @@ const App = () => {
           .then((returnedPerson) => {
             setPeople(
               people.map((person) =>
-                person.id !== id ? person : returnedPerson
+                person._id !== id ? person : returnedPerson
               )
             )
           })
@@ -91,6 +91,11 @@ const App = () => {
     setTextFiltered(searchText)
   }
   useEffect(() => {
+    if (!textFiltered) {
+      getAll().then((people) => {
+        setPeople(people)
+      })
+    }
     const filteredPeople = people.filter((person) => person.name.toLowerCase().includes(textFiltered.toLowerCase()))
     setPeople(filteredPeople)
   }, [textFiltered])
@@ -112,7 +117,7 @@ const App = () => {
       {people.map((person) => (
         <div key={person.name}>
           <Number number={person.number} name={person.name} />
-          <button onClick={() => handleDelete(person.id, person.name)}>
+          <button onClick={() => handleDelete(person._id, person.name)}>
             Delete
           </button>
         </div>
