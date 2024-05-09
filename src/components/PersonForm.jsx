@@ -1,3 +1,6 @@
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+
 export const PersonForm = ({
   handleSubmit,
   handleChange,
@@ -6,24 +9,25 @@ export const PersonForm = ({
 }) => {
   return (
     <div>
-      <form className='form-container' onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div>
-          name:
-          <input
+          <Input
+            className='my-5'
+            placeholder='add name'
             onChange={(event) => handleChange(event, 'name')}
             value={newName}
           />
         </div>
         <div>
-          number:
-          <input
+          <Input
+            placeholder='add number'
             type='text'
             onChange={(event) => handleChange(event, 'number')}
             value={newNumber}
           />
         </div>
         <div>
-          <button type='submit'>add</button>
+          <Button className='w-full my-4' type='submit'>ADD</Button>
         </div>
       </form>
     </div>
